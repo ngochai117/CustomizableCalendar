@@ -40,6 +40,11 @@ public class AUCalendar {
         return calendar.getFirstMonth();
     }
 
+    public DateTime getLastMonth() {
+        return calendar.getLastMonth();
+    }
+
+
     public Calendar getCalendar() {
         return calendar;
     }

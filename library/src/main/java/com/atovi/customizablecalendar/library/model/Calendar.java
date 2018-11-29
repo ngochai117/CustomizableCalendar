@@ -1,5 +1,7 @@
 package com.atovi.customizablecalendar.library.model;
 
+import android.util.Log;
+
 import org.joda.time.DateTime;
 import org.joda.time.Months;
 
@@ -13,6 +15,7 @@ import java.util.Locale;
 
 public class Calendar {
     private DateTime firstMonth;
+    private DateTime lastMonth;
     private DateTime firstSelectedDay;
     private DateTime lastSelectedDay;
     private DateTime currentMonth;
@@ -21,7 +24,10 @@ public class Calendar {
     private int firstDayOfWeek;
 
     public Calendar(DateTime firstMonth, DateTime lastMonth) {
+        firstMonth = firstMonth.withTimeAtStartOfDay().withDayOfMonth(1);
+        lastMonth = lastMonth.withTimeAtStartOfDay().withDayOfMonth(1);
         this.firstMonth = firstMonth;
+        this.lastMonth = lastMonth;
         this.firstDayOfWeek = java.util.Calendar.getInstance(Locale.getDefault()).getFirstDayOfWeek();
 
         DateTime startMonth = firstMonth.plusMonths(1);
@@ -89,5 +95,9 @@ public class Calendar {
 
     public DateTime getFirstMonth() {
         return firstMonth;
+    }
+
+    public DateTime getLastMonth() {
+        return lastMonth;
     }
 }

@@ -8,9 +8,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.atovi.customizablecalendar.library.adapter.WeekDaysViewAdapter;
+import com.atovi.customizablecalendar.library.components.CustomizableCalendar;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
 import com.atovi.customizablecalendar.library.model.Calendar;
 import com.atovi.customizablecalendar.library.model.CalendarItem;
+import com.atovi.customizablecalendar.library.model.SegmentDestination;
 
 import org.joda.time.DateTime;
 
@@ -25,14 +27,18 @@ public class CalendarViewInteractor implements ViewInteractor {
     private Calendar calendar;
     private TextView firstDaySelectedTxt;
     private TextView lastDaySelectedTxt;
-
+    private CustomizableCalendar customizableCalendar;
     CalendarViewInteractor(Context context) {
         this.context = context;
     }
 
     @Override
     public void onCustomizableCalendarBindView(View view) {
-
+        try {
+            customizableCalendar = (CustomizableCalendar) view;
+        } catch (ClassCastException e) {
+            throw new ClassCastException("view not is CustomizableCalendar");
+        }
     }
 
     @Override
@@ -55,7 +61,19 @@ public class CalendarViewInteractor implements ViewInteractor {
 
     @Override
     public void onSubViewBindView(View view, String month) {
+        view.findViewById(R.id.imgVNavLeft).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customizableCalendar.scrollToSegment(SegmentDestination.PREVIOS_MONTH);
+            }
+        });
 
+        view.findViewById(R.id.imgVNavRight).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customizableCalendar.scrollToSegment(SegmentDestination.NEXT_MONTH);
+            }
+        });
     }
 
     @Override

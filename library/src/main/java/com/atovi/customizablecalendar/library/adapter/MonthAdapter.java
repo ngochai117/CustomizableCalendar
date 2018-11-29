@@ -51,7 +51,7 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
         this.subscriptions = new CompositeDisposable();
         this.calendar = AUCalendar.getInstance();
         this.layoutResId = R.layout.calendar_cell;
-        this.currentMonth = currentMonth.withDayOfMonth(1).withMillisOfDay(0);
+        this.currentMonth = currentMonth.withDayOfMonth(1).withTimeAtStartOfDay();
         initFromCalendar();
         subscribe();
     }
@@ -59,11 +59,11 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
     private void initFromCalendar() {
         firstSelectedDay = calendar.getFirstSelectedDay();
         if (firstSelectedDay != null) {
-            firstSelectedDay = firstSelectedDay.withMillisOfDay(0);
+            firstSelectedDay = firstSelectedDay.withTimeAtStartOfDay();
         }
         lastSelectedDay = calendar.getLastSelectedDay();
         if (lastSelectedDay != null) {
-            lastSelectedDay = lastSelectedDay.withMillisOfDay(0);
+            lastSelectedDay = lastSelectedDay.withTimeAtStartOfDay();
         }
         multipleSelection = calendar.isMultipleSelectionEnabled();
         firstDayOfWeek = calendar.getFirstDayOfWeek();
@@ -111,7 +111,7 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             if (currentItem == null) {
                 background.setBackground(null);
                 dayView.setText(null);
-            } else if (currentItem.compareTo(calendar.getFirstMonth().withMillisOfDay(0)) < 0) {
+            } else if (currentItem.compareTo(calendar.getFirstMonth().withTimeAtStartOfDay()) < 0) {
                 currentItem.setSelectable(false);
                 background.setBackground(null);
                 dayView.setTextColor(Color.BLACK);

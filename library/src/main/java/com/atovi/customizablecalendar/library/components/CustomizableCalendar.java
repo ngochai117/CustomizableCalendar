@@ -9,9 +9,12 @@ import android.widget.LinearLayout;
 
 import com.atovi.customizablecalendar.library.R;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
+import com.atovi.customizablecalendar.library.model.SegmentDestination;
 import com.atovi.customizablecalendar.library.presenter.implementations.CustomizableCalendarPresenterImpl;
 import com.atovi.customizablecalendar.library.presenter.interfeaces.CustomizableCalendarPresenter;
 import com.atovi.customizablecalendar.library.view.CustomizableCalendarView;
+
+import org.joda.time.DateTime;
 
 /**
  * Created by francescofurlan on 23/06/17.
@@ -65,6 +68,22 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
 
     public CustomizableCalendarPresenter getPresenter() {
         return presenter;
+    }
+
+    public void scrollToDate(DateTime dateTime) {
+        calendarRecyclerView.scrollToDate(dateTime);
+    }
+
+    public void scrollToDate(DateTime dateTime, boolean animateScroll) {
+        calendarRecyclerView.scrollToDate(dateTime, animateScroll);
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination) {
+        calendarRecyclerView.scrollToSegment(segmentDestination);
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination, boolean animateScroll) {
+        calendarRecyclerView.scrollToSegment(segmentDestination, animateScroll);
     }
 
     @Override
