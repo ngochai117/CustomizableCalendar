@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
@@ -50,7 +51,7 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         if (presenter == null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomizableCalendar);
-            presenter = new CustomizableCalendarPresenterImpl();
+            presenter = new CustomizableCalendarPresenterImpl(context);
             presenter.setView(this);
             layoutResId = R.layout.customizable_calendar;
             if (typedArray != null) {
@@ -103,8 +104,9 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
     }
 
     @Override
-    public void onCurrentMonthChanged(String month) {
-        subView.onMonthChanged(month);
+    public void onCurrentMonthChanged(DateTime currentMonth) {
+        Log.d(getClass().getSimpleName(), "onCurrentMonthChanged: ");
+        subView.onMonthChanged(currentMonth);
     }
 
     @Override

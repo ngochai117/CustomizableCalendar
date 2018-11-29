@@ -249,7 +249,7 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
         final int empties;
         final int year = currentMonth.getYear();
         final int month = currentMonth.getMonthOfYear();
-        final int firstDayOfMonth = currentMonth.getDayOfWeek() + 1;
+        final int firstDayOfMonth = currentMonth.getDayOfWeek();
         final int lastDayOfMonth = DateUtils.getDaysInMonth(month - 1, year);
         List<CalendarItem> updatedDays = new ArrayList<>();
 

@@ -144,15 +144,16 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarView {
     }
 
     public void scrollToDate(DateTime dateTime, boolean animateScroll) {
-        dateTime = dateTime.withTimeAtStartOfDay().withDayOfMonth(1);
-        int positionDes = getPositionOfDate(dateTime);
-        if (positionDes != -1 && dateTime != calendar.getCurrentMonth()) {
-            if (animateScroll) {
-                smoothScrollToPosition(positionDes);
-            } else {
-                scrollToPosition(positionDes);
+        if (dateTime != calendar.getCurrentMonth()) {
+            dateTime = dateTime.withTimeAtStartOfDay().withDayOfMonth(1);
+            int positionDes = getPositionOfDate(dateTime);
+            if (positionDes != -1 && dateTime != calendar.getCurrentMonth()) {
+                if (animateScroll) {
+                    smoothScrollToPosition(positionDes);
+                } else {
+                    scrollToPosition(positionDes);
+                }
             }
-            calendar.setCurrentMonth(dateTime);
         }
     }
 

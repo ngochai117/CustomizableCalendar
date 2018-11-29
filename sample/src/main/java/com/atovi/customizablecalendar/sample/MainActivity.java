@@ -55,7 +55,5 @@ public class MainActivity extends AppCompatActivity {
 
         // inject (set) the calendarViewInteractor to the CustomizableCalendar
         customizableCalendar.injectViewInteractor(calendarViewInteractor);
-        customizableCalendar.injectPresenter(new CustomCalendarPresenter());
-
     }
 }

@@ -21,14 +21,14 @@ public class Calendar {
     private DateTime currentMonth;
     private List<DateTime> months;
     private boolean multipleSelection;
-    private int firstDayOfWeek;
+    private @DayOfWeek int firstDayOfWeek;
 
     public Calendar(DateTime firstMonth, DateTime lastMonth) {
         firstMonth = firstMonth.withTimeAtStartOfDay().withDayOfMonth(1);
         lastMonth = lastMonth.withTimeAtStartOfDay().withDayOfMonth(1);
         this.firstMonth = firstMonth;
         this.lastMonth = lastMonth;
-        this.firstDayOfWeek = java.util.Calendar.getInstance(Locale.getDefault()).getFirstDayOfWeek();
+        this.firstDayOfWeek = DayOfWeek.MONDAY;
 
         DateTime startMonth = firstMonth.plusMonths(1);
         int monthsBetweenCount = Months.monthsBetween(firstMonth, lastMonth).getMonths();
@@ -85,11 +85,11 @@ public class Calendar {
         this.multipleSelection = multipleSelection;
     }
 
-    public int getFirstDayOfWeek() {
+    public @DayOfWeek int getFirstDayOfWeek() {
         return firstDayOfWeek;
     }
 
-    public void setFirstDayOfWeek(int firstDayOfWeek) {
+    public void setFirstDayOfWeek(@DayOfWeek int firstDayOfWeek) {
         this.firstDayOfWeek = firstDayOfWeek;
     }
 

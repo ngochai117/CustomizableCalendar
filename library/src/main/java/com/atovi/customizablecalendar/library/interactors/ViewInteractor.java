@@ -23,7 +23,7 @@ public interface ViewInteractor {
 
     void onWeekDayBindView(WeekDaysViewAdapter.WeekDayVH holder, String weekDay);
 
-    void onSubViewBindView(View view, String month);
+    void onSubViewBindView(View view, DateTime month);
 
     void onCalendarBindView(View view);
 
@@ -46,4 +46,6 @@ public interface ViewInteractor {
     boolean hasImplementedWeekDayNameFormat();
 
     String formatWeekDayName(String nameOfDay);
+
+    void onCurrentMonthChanged(DateTime currentMonth);
 }
