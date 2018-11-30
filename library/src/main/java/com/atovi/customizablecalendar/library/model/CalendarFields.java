@@ -12,10 +12,6 @@ import static com.atovi.customizablecalendar.library.model.CalendarFields.LAST_S
 import static com.atovi.customizablecalendar.library.model.CalendarFields.MONTHS;
 import static com.atovi.customizablecalendar.library.model.CalendarFields.MULTIPLE_SELECTION;
 
-/**
- * Created by francescofurlan on 30/06/17.
- */
-
 @StringDef({
         FIRST_SELECTED_DAY,
         LAST_SELECTED_DAY,

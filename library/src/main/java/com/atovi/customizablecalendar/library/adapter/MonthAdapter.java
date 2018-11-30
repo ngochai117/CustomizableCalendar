@@ -14,6 +14,8 @@ import com.atovi.customizablecalendar.library.interactors.AUCalendar;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
 import com.atovi.customizablecalendar.library.model.CalendarFields;
 import com.atovi.customizablecalendar.library.model.CalendarItem;
+import com.atovi.customizablecalendar.library.model.CompareDateTime;
+import com.atovi.customizablecalendar.library.model.SelectionPosition;
 import com.atovi.customizablecalendar.library.presenter.interfeaces.CustomizableCalendarPresenter;
 import com.atovi.customizablecalendar.library.utils.DateUtils;
 import com.atovi.customizablecalendar.library.view.MonthView;
@@ -97,10 +99,43 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             view = inflater.inflate(layoutResId, null);
         }
 
+        if (currentItem != null) {
+            if (currentItem.compareTo(currentMonth) < 0) {
+                currentItem.setBelongToThisMonth(false);
+            } else {
+                currentItem.setBelongToThisMonth(true);
+
+                if (firstSelectedDay != null) {
+                    int startSelectedCompared = currentItem.compareTo(firstSelectedDay);
+                    if (!multipleSelection) {
+                        if (startSelectedCompared == CompareDateTime.SAME) {
+                            currentItem.setSelectionPosition(SelectionPosition.FULL);
+                        }
+                    } else if (startSelectedCompared == CompareDateTime.SAME) {
+                        if (lastSelectedDay == null || currentItem.compareTo(lastSelectedDay) == CompareDateTime.SAME) {
+                            currentItem.setSelectionPosition(SelectionPosition.FULL);
+                        } else {
+                            currentItem.setSelectionPosition(SelectionPosition.START);
+                        }
+                    } else if (startSelectedCompared == CompareDateTime.AFTER && lastSelectedDay != null) {
+                        int endSelectedCompared = currentItem.compareTo(lastSelectedDay);
+                        if (endSelectedCompared == CompareDateTime.SAME) {
+                            currentItem.setSelectionPosition(SelectionPosition.END);
+                        } else if (endSelectedCompared == CompareDateTime.BEFORE) {
+                            currentItem.setSelectionPosition(SelectionPosition.MIDDLE);
+                        }
+                    }
+                } else {
+                    currentItem.setSelectionPosition(SelectionPosition.NONE);
+                }
+            }
+        }
+
         if (viewInteractor != null && viewInteractor.hasImplementedMonthCellBinding()) {
             view = viewInteractor.onMonthCellBindView(view, currentItem);
         } else {
             final TextView dayView = view.findViewById(android.R.id.title);
+            final TextView messageView = view.findViewById(android.R.id.message);
             final View background = view.findViewById(android.R.id.background);
             final View startSelectionView = view.findViewById(android.R.id.startSelectingText);
             final View endSelectionView = view.findViewById(android.R.id.stopSelectingText);
@@ -111,46 +146,55 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             if (currentItem == null) {
                 background.setBackground(null);
                 dayView.setText(null);
-            } else if (currentItem.compareTo(calendar.getFirstMonth().withTimeAtStartOfDay()) < 0) {
+                if (messageView != null) {
+                    messageView.setText(null);
+                }
+            } else if (!currentItem.isBelongToThisMonth()) {
                 currentItem.setSelectable(false);
                 background.setBackground(null);
                 dayView.setTextColor(Color.BLACK);
                 dayView.setText(currentItem.getDayString());
                 dayView.setAlpha(0.6f);
+                if (messageView != null) {
+                    messageView.setTextColor(Color.BLACK);
+                    messageView.setText(currentItem.getDayString());
+                    messageView.setAlpha(0.6f);
+                }
             } else {
                 currentItem.setSelectable(true);
                 dayView.setAlpha(1f);
+                if (messageView != null) {
+                    messageView.setAlpha(1f);
+                }
                 Integer backgroundResource = null;
-                if (firstSelectedDay != null) {
-                    int startSelectedCompared = currentItem.compareTo(firstSelectedDay);
-                    if (!multipleSelection) {
-                        if (startSelectedCompared == 0) {
-                            backgroundResource = R.drawable.empty_circle;
-                        }
-                    } else if (startSelectedCompared == 0) {
-                        if (lastSelectedDay == null || lastSelectedDay.equals(currentItem.getDateTime())) {
-                            backgroundResource = R.drawable.circle;
-                        } else {
-                            backgroundResource = R.drawable.left_rounded_rectangle;
-                            endSelectionView.setVisibility(View.VISIBLE);
-                        }
-                    } else if (startSelectedCompared > 0 && lastSelectedDay != null) {
-                        int endSelectedCompared = currentItem.compareTo(lastSelectedDay);
-                        if (endSelectedCompared == 0) {
-                            backgroundResource = R.drawable.right_rounded_rectangle;
-                            startSelectionView.setVisibility(View.VISIBLE);
-                        } else if (endSelectedCompared < 0) {
-                            backgroundResource = R.drawable.rectangle;
-                            startSelectionView.setVisibility(View.VISIBLE);
-                            endSelectionView.setVisibility(View.VISIBLE);
-                        }
-                    }
+                if (currentItem.isToday()) {
+                    backgroundResource = R.drawable.empty_circle;
+                }
+                switch (currentItem.getSelectionPosition()) {
+                    case SelectionPosition.START:
+                        backgroundResource = R.drawable.left_rounded_rectangle;
+                        endSelectionView.setVisibility(View.VISIBLE);
+                        break;
+                    case SelectionPosition.MIDDLE:
+                        backgroundResource = R.drawable.rectangle;
+                        startSelectionView.setVisibility(View.VISIBLE);
+                        endSelectionView.setVisibility(View.VISIBLE);
+                        break;
+                    case SelectionPosition.END:
+                        backgroundResource = R.drawable.right_rounded_rectangle;
+                        startSelectionView.setVisibility(View.VISIBLE);
+                        break;
+                    case SelectionPosition.FULL:
+                        backgroundResource = R.drawable.circle;
+                        break;
+                    case SelectionPosition.NONE:
+                        break;
                 }
 
                 int color = Color.BLACK;
                 if (backgroundResource != null) {
                     background.setBackgroundResource(backgroundResource);
-                    if (multipleSelection) {
+                    if (multipleSelection && backgroundResource != R.drawable.empty_circle) {
                         color = Color.WHITE;
                     }
                 } else {
@@ -159,6 +203,10 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
 
                 dayView.setTextColor(color);
                 dayView.setText(currentItem.getDayString());
+                if (messageView != null) {
+                    messageView.setTextColor(color);
+                    messageView.setText(currentItem.getDateTime().toString("d/MM"));
+                }
             }
         }
 
@@ -215,12 +263,14 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             } else {
                 if (firstSelectedDay != null) {
                     if (lastSelectedDay == null) {
-                        int startSelectedCompared = dateSelected.compareTo(firstSelectedDay);
-                        if (startSelectedCompared < 0) {
-                            notifyLastSelectionUpdated(firstSelectedDay);
-                            notifyFirstSelectionUpdated(dateSelected);
-                        }else{
-                            notifyLastSelectionUpdated(dateSelected);
+                        if (!dateSelected.equals(firstSelectedDay)) {
+                            int startSelectedCompared = dateSelected.compareTo(firstSelectedDay);
+                            if (startSelectedCompared < 0) {
+                                notifyLastSelectionUpdated(firstSelectedDay);
+                                notifyFirstSelectionUpdated(dateSelected);
+                            } else {
+                                notifyLastSelectionUpdated(dateSelected);
+                            }
                         }
                     } else {
                         notifyFirstSelectionUpdated(dateSelected);

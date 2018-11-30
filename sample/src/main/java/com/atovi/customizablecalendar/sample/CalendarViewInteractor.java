@@ -1,6 +1,7 @@
 package com.atovi.customizablecalendar.sample;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
 import com.atovi.customizablecalendar.library.model.Calendar;
 import com.atovi.customizablecalendar.library.model.CalendarItem;
 import com.atovi.customizablecalendar.library.model.SegmentDestination;
+import com.atovi.customizablecalendar.library.model.SelectionPosition;
 
 import org.joda.time.DateTime;
 
@@ -97,7 +99,65 @@ public class CalendarViewInteractor implements ViewInteractor {
 
     @Override
     public View onMonthCellBindView(View view, CalendarItem currentItem) {
-        return null;
+
+        final TextView dayView = view.findViewById(android.R.id.title);
+        final View startSelectionView = view.findViewById(android.R.id.startSelectingText);
+        final View endSelectionView = view.findViewById(android.R.id.stopSelectingText);
+
+        startSelectionView.setVisibility(View.GONE);
+        endSelectionView.setVisibility(View.GONE);
+
+        if (currentItem == null) {
+            dayView.setBackground(null);
+            dayView.setText(null);
+        } else if (!currentItem.isBelongToThisMonth()) {
+            currentItem.setSelectable(false);
+            dayView.setBackground(null);
+            dayView.setTextColor(Color.BLACK);
+            dayView.setText(currentItem.getDayString());
+            dayView.setAlpha(0.6f);
+        } else {
+            currentItem.setSelectable(true);
+            dayView.setAlpha(1f);
+            Integer backgroundResource = null;
+            if (currentItem.isToday()) {
+                backgroundResource = com.atovi.customizablecalendar.library.R.drawable.empty_circle;
+            }
+            switch (currentItem.getSelectionPosition()) {
+                case SelectionPosition.START:
+                    backgroundResource = com.atovi.customizablecalendar.library.R.drawable.left_rounded_rectangle;
+                    endSelectionView.setVisibility(View.VISIBLE);
+                    break;
+                case SelectionPosition.MIDDLE:
+                    backgroundResource = com.atovi.customizablecalendar.library.R.drawable.rectangle;
+                    startSelectionView.setVisibility(View.VISIBLE);
+                    endSelectionView.setVisibility(View.VISIBLE);
+                    break;
+                case SelectionPosition.END:
+                    backgroundResource = com.atovi.customizablecalendar.library.R.drawable.right_rounded_rectangle;
+                    startSelectionView.setVisibility(View.VISIBLE);
+                    break;
+                case SelectionPosition.FULL:
+                    backgroundResource = com.atovi.customizablecalendar.library.R.drawable.circle;
+                    break;
+                case SelectionPosition.NONE:
+                    break;
+            }
+
+            int color = Color.BLACK;
+            if (backgroundResource != null) {
+                dayView.setBackgroundResource(backgroundResource);
+                if (calendar.isMultipleSelectionEnabled() && backgroundResource != com.atovi.customizablecalendar.library.R.drawable.empty_circle) {
+                    color = Color.WHITE;
+                }
+            } else {
+                dayView.setBackground(null);
+            }
+
+            dayView.setTextColor(color);
+            dayView.setText(currentItem.getDayString());
+        }
+        return view;
     }
 
     @Override
@@ -122,7 +182,7 @@ public class CalendarViewInteractor implements ViewInteractor {
 
     @Override
     public boolean hasImplementedMonthCellBinding() {
-        return false;
+        return true;
     }
 
     @Override

@@ -4,14 +4,14 @@ import org.joda.time.DateTime;
 
 import java.util.Calendar;
 
-/**
- * Created by francescofurlan on 23/06/17.
- */
 
 public class CalendarItem {
     private long id;
     private DateTime dateTime;
-    private boolean selected;
+    private boolean selectable;
+    private boolean isBelongToThisMonth;
+    private @SelectionPosition int selectionPosition = SelectionPosition.NONE;
+
 
     public CalendarItem(Calendar calendar) {
         this.dateTime = new DateTime(calendar);
@@ -37,11 +37,11 @@ public class CalendarItem {
     }
 
     public boolean isSelectable() {
-        return selected;
+        return selectable;
     }
 
-    public void setSelectable(boolean selected) {
-        this.selected = selected;
+    public void setSelectable(boolean selectable) {
+        this.selectable = selectable;
     }
 
     public long getId() {
@@ -52,7 +52,7 @@ public class CalendarItem {
         this.id = id;
     }
 
-    public int compareTo(DateTime today) {
+    public @CompareDateTime int compareTo(DateTime today) {
         return dateTime.compareTo(today);
     }
 
@@ -70,5 +70,33 @@ public class CalendarItem {
 
     public int getYear() {
         return dateTime.getYear();
+    }
+
+    public @DayOfWeek int getDayOfWeek() {
+        return dateTime.getDayOfWeek();
+    }
+
+    public boolean isBelongToThisMonth() {
+        return isBelongToThisMonth;
+    }
+
+    public void setBelongToThisMonth(boolean belongToThisMonth) {
+        isBelongToThisMonth = belongToThisMonth;
+    }
+
+    public @SelectionPosition int getSelectionPosition() {
+        return selectionPosition;
+    }
+
+    public void setSelectionPosition(@SelectionPosition int selectionPosition) {
+        this.selectionPosition = selectionPosition;
+    }
+
+    public boolean isToday() {
+        return compareTo(new DateTime().withTimeAtStartOfDay()) == CompareDateTime.SAME;
+    }
+
+    public @CompareDateTime int compareToDay() {
+        return compareTo(new DateTime().withTimeAtStartOfDay());
     }
 }

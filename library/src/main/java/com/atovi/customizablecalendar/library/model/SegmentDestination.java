@@ -11,9 +11,6 @@ import static com.atovi.customizablecalendar.library.model.SegmentDestination.PR
 import static com.atovi.customizablecalendar.library.model.SegmentDestination.START_MONTH;
 
 
-/**
- * Created by francescofurlan on 30/06/17.
- */
 
 @StringDef({
         NEXT_MONTH,
