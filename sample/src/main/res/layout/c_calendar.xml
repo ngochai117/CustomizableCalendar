@@ -28,7 +28,6 @@
         android:id="@android:id/content"
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:layout_marginTop="15dp"
-        app:cell_layout="@layout/calendar_cell" />
+        android:layout_marginTop="15dp"/>
 
 </LinearLayout>

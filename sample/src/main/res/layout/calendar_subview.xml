@@ -23,7 +23,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:tag="dateTitle"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:text="FEBRUARY 2014"
         android:textSize="20sp"/>
 

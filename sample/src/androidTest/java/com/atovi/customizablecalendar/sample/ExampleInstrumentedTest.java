@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.molo17.customizablecalendar.sample.test", appContext.getPackageName());
+        assertEquals("com.atovi.customizablecalendar.sample.test", appContext.getPackageName());
     }
 }

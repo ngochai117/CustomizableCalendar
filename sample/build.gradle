@@ -4,7 +4,7 @@ android {
     compileSdkVersion 27
     buildToolsVersion '28.0.3'
     defaultConfig {
-        applicationId "com.molo17.customizablecalendar"
+        applicationId "com.atovi.customizablecalendar"
         minSdkVersion 18
         targetSdkVersion 27
         versionCode 1

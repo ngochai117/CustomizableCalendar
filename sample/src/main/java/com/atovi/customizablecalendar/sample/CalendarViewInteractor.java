@@ -63,7 +63,7 @@ public class CalendarViewInteractor implements ViewInteractor {
 
     @Override
     public void onWeekDayBindView(WeekDaysViewAdapter.WeekDayVH holder, String weekDay) {
-        holder.weekDayTxt.setTextColor(context.getResources().getColor(android.R.color.white));
+        holder.weekDayTxt.setTextColor(context.getResources().getColor(android.R.color.holo_green_light));
     }
 
     @Override
