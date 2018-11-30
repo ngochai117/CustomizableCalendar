@@ -3,6 +3,8 @@ package com.atovi.customizablecalendar.library.presenter.interfeaces;
 import com.atovi.customizablecalendar.library.interactors.ViewInjector;
 import com.atovi.customizablecalendar.library.view.CustomizableCalendarView;
 
+import org.joda.time.DateTime;
+
 import java.util.List;
 
 /**

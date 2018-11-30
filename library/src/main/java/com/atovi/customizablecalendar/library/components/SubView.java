@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,7 +28,8 @@ public class SubView extends RelativeLayout implements com.atovi.customizablecal
 
     private ViewInteractor viewInteractor;
 
-    private @LayoutRes int layoutResId = R.layout.sub_view;
+    private @LayoutRes
+    int layoutResId = R.layout.sub_view;
     private CustomizableCalendarPresenter presenter;
     private Context context;
 
@@ -57,10 +59,12 @@ public class SubView extends RelativeLayout implements com.atovi.customizablecal
     }
 
     @Override
-    public void onMonthChanged(String month) {
-        monthTxt.setText(month);
+    public void onMonthChanged(DateTime currentMonth) {
+        Log.d(getClass().getSimpleName(), "onCurrentMonthChange: ");
         if (viewInteractor != null) {
-            viewInteractor.onSubViewBindView(this, month);
+            viewInteractor.onCurrentMonthChanged(currentMonth);
+        } else {
+            monthTxt.setText(currentMonth.toString("MMMMM", Locale.getDefault()));
         }
     }
 
@@ -77,10 +81,9 @@ public class SubView extends RelativeLayout implements com.atovi.customizablecal
     public void injectViewInteractor(ViewInteractor viewInteractor) {
         this.viewInteractor = viewInteractor;
         DateTime firstMonth = AUCalendar.getInstance().getFirstMonth();
-        String month = firstMonth.toString("MMMMM", Locale.getDefault());
-        if (!TextUtils.isEmpty(month)) {
-            String formattedMonth = month.substring(0, 1).toUpperCase(Locale.getDefault()) + month.substring(1);
-            onMonthChanged(formattedMonth);
+        if (viewInteractor != null) {
+            viewInteractor.onSubViewBindView(this, firstMonth);
+            onMonthChanged(firstMonth);
         }
     }
 

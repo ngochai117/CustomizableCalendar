@@ -63,7 +63,7 @@ public class WeekDaysViewAdapter extends RecyclerView.Adapter<WeekDaysViewAdapte
     }
 
     public class WeekDayVH extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView weekDayTxt;
+        public TextView weekDayTxt;
 
         public WeekDayVH(View itemView) {
             super(itemView);

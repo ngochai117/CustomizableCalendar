@@ -7,12 +7,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.atovi.customizablecalendar.library.R;
 import com.atovi.customizablecalendar.library.adapter.CalendarViewAdapter;
 import com.atovi.customizablecalendar.library.interactors.AUCalendar;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
+import com.atovi.customizablecalendar.library.model.SegmentDestination;
 import com.atovi.customizablecalendar.library.presenter.interfeaces.CustomizableCalendarPresenter;
 import com.atovi.customizablecalendar.library.view.CalendarView;
 
@@ -131,6 +133,51 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarView {
                 }
             }
         });
+    }
+
+    private int getPositionOfDate(DateTime dateTime) {
+        return calendar.getMonths().indexOf(dateTime);
+    }
+
+    public void scrollToDate(DateTime dateTime) {
+        scrollToDate(dateTime, true);
+    }
+
+    public void scrollToDate(DateTime dateTime, boolean animateScroll) {
+        if (dateTime != calendar.getCurrentMonth()) {
+            dateTime = dateTime.withTimeAtStartOfDay().withDayOfMonth(1);
+            int positionDes = getPositionOfDate(dateTime);
+            if (positionDes != -1 && dateTime != calendar.getCurrentMonth()) {
+                if (animateScroll) {
+                    smoothScrollToPosition(positionDes);
+                } else {
+                    scrollToPosition(positionDes);
+                }
+            }
+        }
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination) {
+        scrollToSegment(segmentDestination, true);
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination, boolean animateScroll) {
+        switch (segmentDestination) {
+            case SegmentDestination.NEXT_MONTH:
+                scrollToDate(calendar.getCurrentMonth().plusMonths(1), animateScroll);
+                break;
+            case SegmentDestination.PREVIOS_MONTH:
+                scrollToDate(calendar.getCurrentMonth().minusMonths(1), animateScroll);
+                break;
+            case SegmentDestination.START_MONTH:
+                scrollToDate(calendar.getFirstMonth(), animateScroll);
+                break;
+            case SegmentDestination.END_MONTH:
+                scrollToDate(calendar.getLastMonth(), animateScroll);
+                break;
+            default:
+                break;
+        }
     }
 
     @Override

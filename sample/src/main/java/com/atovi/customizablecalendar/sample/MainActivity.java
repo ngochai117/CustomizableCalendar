@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateData() {
         // setting up first and last month that must be showed in the calendar
-        DateTime firstMonth = new DateTime().withDayOfMonth(1);
-        DateTime lastMonth = new DateTime().plusMonths(24).withDayOfMonth(1);
+        DateTime firstMonth = new DateTime();
+        DateTime lastMonth = new DateTime().plusMonths(24);
 
         // create the Calendar obj and setting it up with some configs like:
         // - first selected day
@@ -55,6 +55,5 @@ public class MainActivity extends AppCompatActivity {
 
         // inject (set) the calendarViewInteractor to the CustomizableCalendar
         customizableCalendar.injectViewInteractor(calendarViewInteractor);
-
     }
 }

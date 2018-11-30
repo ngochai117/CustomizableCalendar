@@ -60,7 +60,7 @@ dependencies {
 Add CustomizableCalendar to your layout
 
 ```xml
-<com.molo17.customizablecalendar.library.components.CustomizableCalendar
+<com.atovi.customizablecalendar.library.components.CustomizableCalendar
         android:id="@+id/customizable_calendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -71,7 +71,7 @@ Add CustomizableCalendar to your layout
 First of all you should create a class that implements `ViewInteractor` interface (you can find the explanation in the `How to customize > Java` section).
 
 After that go in the Activity/Fragment where you added the `CustomizableCalendar` View;
-here you should specify the first month and the last month, to do this, create a `Calendar` (located in `com.molo17.customizablecalendar.library.model`) object.
+here you should specify the first month and the last month, to do this, create a `Calendar` (located in `com.atovi.customizablecalendar.library.model`) object.
 
 An example of `CustomizableCalendar` init is the following:
 ```java
@@ -158,25 +158,25 @@ An example of a custom layout is the following:
     android:layout_marginStart="30dp"
     android:orientation="vertical">
 
-    <com.molo17.customizablecalendar.library.components.HeaderView
+    <com.atovi.customizablecalendar.library.components.HeaderView
         android:id="@android:id/primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.molo17.customizablecalendar.library.components.SubView
+    <com.atovi.customizablecalendar.library.components.SubView
         android:id="@android:id/text2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp" />
 
-    <com.molo17.customizablecalendar.library.components.WeekDaysView
+    <com.atovi.customizablecalendar.library.components.WeekDaysView
         android:id="@android:id/text1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp" />
 
-    <com.molo17.customizablecalendar.library.components.CalendarRecyclerView
+    <com.atovi.customizablecalendar.library.components.CalendarRecyclerView
         android:id="@android:id/content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/customizable_calendar_height"

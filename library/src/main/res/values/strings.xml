@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">library</string>
+
+    <string name="ctmc_mon">Mon</string>
+    <string name="ctmc_tue">Tue</string>
+    <string name="ctmc_wed">Wed</string>
+    <string name="ctmc_thu">Thu</string>
+    <string name="ctmc_fri">Fri</string>
+    <string name="ctmc_sat">Sat</string>
+    <string name="ctmc_sun">Sun</string>
+
+    <string-array name="ctmc_week_mon_sun">
+        <item>@string/ctmc_mon</item>
+        <item>@string/ctmc_tue</item>
+        <item>@string/ctmc_wed</item>
+        <item>@string/ctmc_thu</item>
+        <item>@string/ctmc_fri</item>
+        <item>@string/ctmc_sat</item>
+        <item>@string/ctmc_sun</item>
+    </string-array>
 </resources>

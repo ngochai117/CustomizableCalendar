@@ -2,6 +2,7 @@ package com.atovi.customizablecalendar.library.interactors;
 
 import com.atovi.customizablecalendar.library.model.Calendar;
 import com.atovi.customizablecalendar.library.model.CalendarFields;
+import com.atovi.customizablecalendar.library.model.DayOfWeek;
 
 import org.joda.time.DateTime;
 
@@ -39,6 +40,11 @@ public class AUCalendar {
     public DateTime getFirstMonth() {
         return calendar.getFirstMonth();
     }
+
+    public DateTime getLastMonth() {
+        return calendar.getLastMonth();
+    }
+
 
     public Calendar getCalendar() {
         return calendar;
@@ -131,11 +137,11 @@ public class AUCalendar {
         }
     }
 
-    public int getFirstDayOfWeek() {
+    public @DayOfWeek int getFirstDayOfWeek() {
         return calendar.getFirstDayOfWeek();
     }
 
-    public void setFirstDayOfWeek(int firstDayOfWeek) {
+    public void setFirstDayOfWeek(@DayOfWeek int firstDayOfWeek) {
         if (calendar.getFirstDayOfWeek() != firstDayOfWeek) {
             calendar.setFirstDayOfWeek(firstDayOfWeek);
             emitOnChange(CalendarFields.FIRST_DAY_OF_WEEK);

@@ -1,9 +1,12 @@
 package com.atovi.customizablecalendar.library.presenter.implementations;
 
+import android.content.Context;
 import android.support.annotation.LayoutRes;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
+import com.atovi.customizablecalendar.library.R;
 import com.atovi.customizablecalendar.library.interactors.AUCalendar;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
 import com.atovi.customizablecalendar.library.model.CalendarFields;
@@ -17,6 +20,7 @@ import com.atovi.customizablecalendar.library.view.WeekDaysView;
 import org.joda.time.DateTime;
 
 import java.text.DateFormatSymbols;
+import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -36,6 +40,11 @@ public class CustomizableCalendarPresenterImpl implements CustomizableCalendarPr
     private ViewInteractor viewInteractor;
     private CustomizableCalendarView view;
     private CompositeDisposable subscriptions = new CompositeDisposable();
+    private Context context;
+
+    public CustomizableCalendarPresenterImpl(Context context) {
+        this.context = context;
+    }
 
     @Override
     public void injectViewInteractor(ViewInteractor viewInteractor) {
@@ -63,7 +72,9 @@ public class CustomizableCalendarPresenterImpl implements CustomizableCalendarPr
                             boolean lastSelectedDayChanged = changeSet.isFieldChanged(CalendarFields.LAST_SELECTED_DAY);
 
                             if (currentMonthChanged) {
-                                onCurrentMonthChanged(calendar.getCurrentMonth());
+                                if (viewInteractor != null) {
+                                    viewInteractor.onCurrentMonthChanged(calendar.getCurrentMonth());
+                                }
                             }
 
                             if (firstDayOfWeekChanged) {
@@ -84,14 +95,6 @@ public class CustomizableCalendarPresenterImpl implements CustomizableCalendarPr
     @Override
     public void onBindView(View rootView) {
         viewInteractor.onCustomizableCalendarBindView(rootView);
-    }
-
-    private void onCurrentMonthChanged(DateTime currentMonth) {
-        String month = currentMonth.toString("MMMMM", Locale.getDefault());
-        if (view != null && !TextUtils.isEmpty(month)) {
-            String formattedMonth = month.substring(0, 1).toUpperCase(Locale.getDefault()) + month.substring(1);
-            view.onCurrentMonthChanged(formattedMonth);
-        }
     }
 
     @Override
@@ -120,8 +123,8 @@ public class CustomizableCalendarPresenterImpl implements CustomizableCalendarPr
 
     @Override
     public List<String> setupWeekDays() {
-        String[] namesOfDays = DateFormatSymbols.getInstance(Locale.getDefault()).getShortWeekdays();
-        int firstDayOfWeek = calendar.getFirstDayOfWeek();
+        String[] namesOfDays = context.getResources().getStringArray(R.array.ctmc_week_mon_sun);
+        int firstDayOfWeek = calendar.getFirstDayOfWeek() - com.atovi.customizablecalendar.library.model.DayOfWeek.MONDAY;
 
         List<String> weekDays = new ArrayList<>();
         for (int i = firstDayOfWeek; i < namesOfDays.length; i++) {

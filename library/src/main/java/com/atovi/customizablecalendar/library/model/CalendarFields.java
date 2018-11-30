@@ -34,3 +34,4 @@ public @interface CalendarFields {
     String MULTIPLE_SELECTION = "multipleSelection";
     String FIRST_DAY_OF_WEEK = "firstDayOfWeek";
 }
+

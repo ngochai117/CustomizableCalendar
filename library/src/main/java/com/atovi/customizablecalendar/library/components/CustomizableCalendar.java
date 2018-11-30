@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.atovi.customizablecalendar.library.R;
 import com.atovi.customizablecalendar.library.interactors.ViewInteractor;
+import com.atovi.customizablecalendar.library.model.SegmentDestination;
 import com.atovi.customizablecalendar.library.presenter.implementations.CustomizableCalendarPresenterImpl;
 import com.atovi.customizablecalendar.library.presenter.interfeaces.CustomizableCalendarPresenter;
 import com.atovi.customizablecalendar.library.view.CustomizableCalendarView;
+
+import org.joda.time.DateTime;
 
 /**
  * Created by francescofurlan on 23/06/17.
@@ -47,7 +51,7 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
     private void init(Context context, AttributeSet attrs, int defStyleAttr) {
         if (presenter == null) {
             TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomizableCalendar);
-            presenter = new CustomizableCalendarPresenterImpl();
+            presenter = new CustomizableCalendarPresenterImpl(context);
             presenter.setView(this);
             layoutResId = R.layout.customizable_calendar;
             if (typedArray != null) {
@@ -67,6 +71,22 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
         return presenter;
     }
 
+    public void scrollToDate(DateTime dateTime) {
+        calendarRecyclerView.scrollToDate(dateTime);
+    }
+
+    public void scrollToDate(DateTime dateTime, boolean animateScroll) {
+        calendarRecyclerView.scrollToDate(dateTime, animateScroll);
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination) {
+        calendarRecyclerView.scrollToSegment(segmentDestination);
+    }
+
+    public void scrollToSegment(@SegmentDestination String segmentDestination, boolean animateScroll) {
+        calendarRecyclerView.scrollToSegment(segmentDestination, animateScroll);
+    }
+
     @Override
     public void injectViewInteractor(ViewInteractor viewInteractor) {
         viewInteractor.onCustomizableCalendarBindView(this);
@@ -84,8 +104,9 @@ public class CustomizableCalendar extends LinearLayout implements CustomizableCa
     }
 
     @Override
-    public void onCurrentMonthChanged(String month) {
-        subView.onMonthChanged(month);
+    public void onCurrentMonthChanged(DateTime currentMonth) {
+        Log.d(getClass().getSimpleName(), "onCurrentMonthChanged: ");
+        subView.onMonthChanged(currentMonth);
     }
 
     @Override
