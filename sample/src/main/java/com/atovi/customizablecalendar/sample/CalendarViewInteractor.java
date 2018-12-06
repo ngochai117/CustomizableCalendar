@@ -112,11 +112,8 @@ public class CalendarViewInteractor implements ViewInteractor {
             dayView.setBackground(null);
             dayView.setText(null);
         } else if (!currentItem.isBelongToThisMonth()) {
-            currentItem.setSelectable(false);
             dayView.setBackground(null);
-            dayView.setTextColor(Color.BLACK);
-            dayView.setText(currentItem.getDayString());
-            dayView.setAlpha(0.6f);
+            dayView.setText(null);
         } else {
             currentItem.setSelectable(true);
             dayView.setAlpha(1f);
