@@ -33,7 +33,7 @@ public interface ViewInteractor {
 
     boolean hasImplementedDayCalculation();
 
-    List<CalendarItem> calculateDays(int year, int month, int firstDayOfMonth, int lastDayOfMonth);
+    List<CalendarItem> calculateDays(int year, int month, int firstDayOfMonth, int lastDayOfMonth, DateTime monthDate);
 
     boolean hasImplementedSelection();
 

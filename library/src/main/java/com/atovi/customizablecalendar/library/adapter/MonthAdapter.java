@@ -100,34 +100,29 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
         }
 
         if (currentItem != null) {
-            if (currentItem.compareTo(currentMonth) < 0) {
-                currentItem.setBelongToThisMonth(false);
-            } else {
-                currentItem.setBelongToThisMonth(true);
 
-                if (firstSelectedDay != null) {
-                    int startSelectedCompared = currentItem.compareTo(firstSelectedDay);
-                    if (!multipleSelection) {
-                        if (startSelectedCompared == CompareDateTime.SAME) {
-                            currentItem.setSelectionPosition(SelectionPosition.FULL);
-                        }
-                    } else if (startSelectedCompared == CompareDateTime.SAME) {
-                        if (lastSelectedDay == null || currentItem.compareTo(lastSelectedDay) == CompareDateTime.SAME) {
-                            currentItem.setSelectionPosition(SelectionPosition.FULL);
-                        } else {
-                            currentItem.setSelectionPosition(SelectionPosition.START);
-                        }
-                    } else if (startSelectedCompared == CompareDateTime.AFTER && lastSelectedDay != null) {
-                        int endSelectedCompared = currentItem.compareTo(lastSelectedDay);
-                        if (endSelectedCompared == CompareDateTime.SAME) {
-                            currentItem.setSelectionPosition(SelectionPosition.END);
-                        } else if (endSelectedCompared == CompareDateTime.BEFORE) {
-                            currentItem.setSelectionPosition(SelectionPosition.MIDDLE);
-                        }
+            if (firstSelectedDay != null) {
+                int startSelectedCompared = currentItem.compareTo(firstSelectedDay);
+                if (!multipleSelection) {
+                    if (startSelectedCompared == CompareDateTime.SAME) {
+                        currentItem.setSelectionPosition(SelectionPosition.FULL);
                     }
-                } else {
-                    currentItem.setSelectionPosition(SelectionPosition.NONE);
+                } else if (startSelectedCompared == CompareDateTime.SAME) {
+                    if (lastSelectedDay == null || currentItem.compareTo(lastSelectedDay) == CompareDateTime.SAME) {
+                        currentItem.setSelectionPosition(SelectionPosition.FULL);
+                    } else {
+                        currentItem.setSelectionPosition(SelectionPosition.START);
+                    }
+                } else if (startSelectedCompared == CompareDateTime.AFTER && lastSelectedDay != null) {
+                    int endSelectedCompared = currentItem.compareTo(lastSelectedDay);
+                    if (endSelectedCompared == CompareDateTime.SAME) {
+                        currentItem.setSelectionPosition(SelectionPosition.END);
+                    } else if (endSelectedCompared == CompareDateTime.BEFORE) {
+                        currentItem.setSelectionPosition(SelectionPosition.MIDDLE);
+                    }
                 }
+            } else {
+                currentItem.setSelectionPosition(SelectionPosition.NONE);
             }
         }
 
@@ -152,13 +147,9 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             } else if (!currentItem.isBelongToThisMonth()) {
                 currentItem.setSelectable(false);
                 background.setBackground(null);
-                dayView.setTextColor(Color.BLACK);
-                dayView.setText(currentItem.getDayString());
-                dayView.setAlpha(0.6f);
+                dayView.setText(null);
                 if (messageView != null) {
-                    messageView.setTextColor(Color.BLACK);
-                    messageView.setText(currentItem.getDayString());
-                    messageView.setAlpha(0.6f);
+                    messageView.setText(null);
                 }
             } else {
                 currentItem.setSelectable(true);
@@ -304,7 +295,7 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
         List<CalendarItem> updatedDays = new ArrayList<>();
 
         if (viewInteractor != null && viewInteractor.hasImplementedDayCalculation()) {
-            days = viewInteractor.calculateDays(year, month, firstDayOfMonth, lastDayOfMonth);
+            updatedDays = viewInteractor.calculateDays(year, month, firstDayOfMonth, lastDayOfMonth, currentMonth);
         } else {
             // default days calculation
             if (firstDayOfMonth == firstDayOfWeek) {
@@ -316,14 +307,16 @@ public class MonthAdapter extends BaseAdapter implements MonthView {
             }
 
             int totDays = lastDayOfMonth + empties;
-            for (int day = 1, position = 1; position <= totDays; position++) {
-                if (position > empties) {
-                    updatedDays.add(new CalendarItem(day++, month, year));
-                } else {
-                    updatedDays.add(null);
-                }
+            for (int day = empties, position = 1; position <= empties; position++) {
+                CalendarItem calendarItem = new CalendarItem(currentMonth.minusDays(day--));
+                calendarItem.setBelongToThisMonth(false);
+                updatedDays.add(calendarItem);
             }
-
+            for (int day = 1, position = empties + 1; position <= totDays; position++) {
+                CalendarItem calendarItem = new CalendarItem(day++, month, year);
+                calendarItem.setBelongToThisMonth(true);
+                updatedDays.add(calendarItem);
+            }
         }
         if (!updatedDays.equals(days)) {
             days = updatedDays;

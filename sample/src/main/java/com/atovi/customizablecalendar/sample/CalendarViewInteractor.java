@@ -17,9 +17,11 @@ import com.atovi.customizablecalendar.library.model.Calendar;
 import com.atovi.customizablecalendar.library.model.CalendarItem;
 import com.atovi.customizablecalendar.library.model.SegmentDestination;
 import com.atovi.customizablecalendar.library.model.SelectionPosition;
+import com.atovi.customizablecalendar.library.utils.DateUtils;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,7 +37,6 @@ public class CalendarViewInteractor implements ViewInteractor {
     private TextView lastDaySelectedTxt;
     private CustomizableCalendar customizableCalendar;
     private TextView tvMonth;
-
     CalendarViewInteractor(Context context) {
         this.context = context;
     }
@@ -166,7 +167,7 @@ public class CalendarViewInteractor implements ViewInteractor {
     }
 
     @Override
-    public List<CalendarItem> calculateDays(int year, int month, int firstDayOfMonth, int lastDayOfMonth) {
+    public List<CalendarItem> calculateDays(int year, int month, int firstDayOfMonth, int lastDayOfMonth, DateTime monthDate) {
         return null;
     }
 
