@@ -37,6 +37,7 @@ public class CalendarViewInteractor implements ViewInteractor {
     private TextView lastDaySelectedTxt;
     private CustomizableCalendar customizableCalendar;
     private TextView tvMonth;
+
     CalendarViewInteractor(Context context) {
         this.context = context;
     }

@@ -122,14 +122,24 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarView {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
-                    case SCROLL_STATE_IDLE: {
+                    case SCROLL_STATE_IDLE:
                         View view = snapHelper.findSnapView(getLayoutManager());
                         if (view != null) {
                             int currentPosition = getChildAdapterPosition(view);
                             DateTime currentMonth = calendar.getMonths().get(currentPosition);
                             calendar.setCurrentMonth(currentMonth);
                         }
-                    }
+                        break;
+                    case SCROLL_STATE_SETTLING:
+                    case SCROLL_STATE_DRAGGING:
+                        View v = snapHelper.findSnapView(getLayoutManager());
+                        if (v != null) {
+                            int currentPosition = getChildAdapterPosition(v);
+                            if (currentPosition == 0) {
+                                calendar.setCurrentMonth(calendar.getFirstMonth());
+                            }
+                        }
+                        break;
                 }
             }
         });
@@ -152,6 +162,7 @@ public class CalendarRecyclerView extends RecyclerView implements CalendarView {
                     smoothScrollToPosition(positionDes);
                 } else {
                     scrollToPosition(positionDes);
+                    calendar.setCurrentMonth(dateTime);
                 }
             }
         }

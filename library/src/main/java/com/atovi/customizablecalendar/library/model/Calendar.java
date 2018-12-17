@@ -39,7 +39,7 @@ public class Calendar {
         currentMonth = firstMonth;
 
         DateTime monthToAdd = new DateTime(startMonth.getYear(), startMonth.getMonthOfYear(), 1, 0, 0);
-        for (int i = 0; i <= monthsBetweenCount; i++) {
+        for (int i = 0; i < monthsBetweenCount; i++) {
             months.add(monthToAdd);
             monthToAdd = monthToAdd.plusMonths(1);
         }

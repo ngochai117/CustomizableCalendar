@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.atovi.customizablecalendar.library.components.CustomizableCalendar;
 import com.atovi.customizablecalendar.library.interactors.AUCalendar;
 import com.atovi.customizablecalendar.library.model.Calendar;
+import com.atovi.customizablecalendar.library.model.SegmentDestination;
 
 import org.joda.time.DateTime;
 
@@ -41,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
         final Calendar calendar = new Calendar(firstMonth, lastMonth);
 
         calendar.setMultipleSelection(true);
-
         // create a CalendarViewInteractor obj needed to interact with the CustomizableCalendar
         final CalendarViewInteractor calendarViewInteractor = new CalendarViewInteractor(getBaseContext());
 
